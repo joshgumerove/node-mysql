@@ -2,40 +2,40 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldDate]) => {
-      res.render("shop/product-list", {
-        prods: rows,
-        pageTitle: "All Products",
+  Product.findAll()
+    .then((products) => {
+      res.render("shop/index", {
+        prods: products,
+        pageTitle: "Shop",
         path: "/products",
       });
     })
-    .catch((err) => console.log("there is an error", err));
+    .catch((err) => console.log("there is an error: ", err));
 };
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(([product]) => {
+  Product.findByPk(prodId)
+    .then((product) => {
       res.render("shop/product-detail", {
-        product: product[0],
-        pageTitle: product[0].title,
+        product: product,
+        pageTitle: product.title,
         path: "/products",
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("there is an error: ", err));
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render("shop/index", {
-        prods: rows,
+        prods: products,
         pageTitle: "Shop",
         path: "/",
       });
     })
-    .catch((err) => console.log("the error is", err));
+    .catch((err) => console.log("there is an error: ", err));
 };
 
 exports.getCart = (req, res, next) => {
