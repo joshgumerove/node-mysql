@@ -42,13 +42,14 @@ Product.belongsTo(User, {
 });
 
 User.hasMany(Product);
-User.hasOne(Cart);
 Cart.belongsTo(User); // adds a key to the cart which will be the userId
+User.hasOne(Cart);
 Cart.belongsToMany(Product, { through: CartItem }); // join table
 Product.belongsToMany(Cart, { through: CartItem });
 
 sequelize
   .sync()
+  // .sync({ force: true })
   .then((result) => {
     return User.findByPk(1);
   })
@@ -59,7 +60,10 @@ sequelize
     return user;
   })
   .then((user) => {
-    console.log(user);
+    return user.createCart();
+  })
+  .then((cart) => {
+    console.log("what is the cart: ", cart);
     app.listen(3000);
   })
   .catch((err) => console.log("error: ", err));
