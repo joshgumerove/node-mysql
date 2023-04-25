@@ -43,7 +43,7 @@ Product.belongsTo(User, {
 
 User.hasMany(Product);
 Cart.belongsTo(User); // adds a key to the cart which will be the userId
-User.hasOne(Cart);
+User.hasOne(Cart, { foreignKey: "userId" });
 Cart.belongsToMany(Product, { through: CartItem }); // join table
 Product.belongsToMany(Cart, { through: CartItem });
 
